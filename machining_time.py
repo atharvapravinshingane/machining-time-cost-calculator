@@ -14,21 +14,27 @@ while True:
         feed = float(input("Enter feed rate (mm/rev): "))
         rpm = float(input("Enter spindle speed (rpm): "))
         diameter = float(input("Enter worpiece diameter (mm): "))
+        machine_rate = float(input("Enter machine hourly rate (Rs/hour): "))
 
+        
         # Step 2: Validate the inputs
-        if length <= 0 or feed <= 0 or rpm <= 0 or diameter <= 0:
+        if length <= 0 or feed <= 0 or rpm <= 0 or diameter <= 0 or machine_rate <= 0:
             print("Error: All values must be greater than zero.")
 
         else:
             # Step 3: Calculate machining time
             machining_time = length / (feed * rpm)
             cutting_speed = (math.pi * diameter * rpm) / 1000
+            machining_cost = (machining_time / 60) * machine_rate
+
 
             # Step 4: Display the result
             print("\n--- Machining Results ---")
             print(f"Machining Time: {machining_time:.2f} minutes")
             print(f"Machining Time: {machining_time * 60:.2f} seconds")
             print(f"Cutting Speed: {cutting_speed:.2f} m/min")
+            print(f"Estimated Machining Cost: Rs. {machining_cost:.2f}")
+
 
     except ValueError:
         print("Error: Please enter valid numerical values.")
