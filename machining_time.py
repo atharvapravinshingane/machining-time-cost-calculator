@@ -1,7 +1,8 @@
 
 # Machining Time Calculator
 # Manufacturing Engineering Project
-
+# Estimates cutting time for a single-pass turning operation
+# Assumes constant spindle speed and feed rate
 print("=== Turning Machining Time Calculator ===")
 
 while True:
