@@ -13,27 +13,50 @@ while True:
         length = float(input("Enter tool travel length (mm): "))
         feed = float(input("Enter feed rate (mm/rev): "))
         rpm = float(input("Enter spindle speed (rpm): "))
-        diameter = float(input("Enter worpiece diameter (mm): "))
+        initial_diameter = float(input("Enter initial diameter (mm): "))
+        final_diameter = float(input("Enter final diameter (mm): "))
+        depth_of_cut = float(input("Enter radial depth of cut (mm): "))
         machine_rate = float(input("Enter machine hourly rate (Rs/hour): "))
 
         
         # Step 2: Validate the inputs
-        if length <= 0 or feed <= 0 or rpm <= 0 or diameter <= 0 or machine_rate <= 0:
-            print("Error: All values must be greater than zero.")
+        if (length <= 0 or feed <= 0 or rpm <= 0
+            or initial_diameter <= 0 or final_diameter <= 0
+            or depth_of_cut <= 0 or machine_rate <= 0
+            or final_diameter >= initial_diameter):
+
+            print("Error: Enter valid positive machining parameters.")
+            print("The final diameter must be smaller than the initial diameter.")
 
         else:
             # Step 3: Calculate machining time
-            machining_time = length / (feed * rpm)
-            cutting_speed = (math.pi * diameter * rpm) / 1000
+            
+            # Calculate number of passes
+            passes = math.ceil((initial_diameter - final_diameter) / (2 * depth_of_cut))
+            
+            # Calculate time per pass
+            time_per_pass = length / (feed * rpm)
+
+            # Calculate total machining time
+            machining_time = time_per_pass * passes
+
+            # Calculate initial cutting speed
+            cutting_speed = (math.pi * initial_diameter * rpm) / 1000
+
+            # Calculate total cutting-time machine cost
             machining_cost = (machining_time / 60) * machine_rate
 
 
-            # Step 4: Display the result
+
+            
             print("\n--- Machining Results ---")
-            print(f"Machining Time: {machining_time:.2f} minutes")
-            print(f"Machining Time: {machining_time * 60:.2f} seconds")
-            print(f"Cutting Speed: {cutting_speed:.2f} m/min")
+            print(f"Number of Passes: {passes}")
+            print(f"Time Per Pass: {time_per_pass:.2f} minutes")
+            print(f"Total Machining Time: {machining_time:.2f} minutes")
+            print(f"Total Machining Time: {machining_time * 60:.2f} seconds")
+            print(f"Initial Cutting Speed: {cutting_speed:.2f} m/min")
             print(f"Estimated Machining Cost: Rs. {machining_cost:.2f}")
+
 
 
     except ValueError:
