@@ -3,6 +3,7 @@
 # Manufacturing Engineering Project
 # Estimates cutting time for a single-pass turning operation
 # Assumes constant spindle speed and feed rate
+import math
 print("=== Turning Machining Time Calculator ===")
 
 while True:
@@ -12,19 +13,22 @@ while True:
         length = float(input("Enter tool travel length (mm): "))
         feed = float(input("Enter feed rate (mm/rev): "))
         rpm = float(input("Enter spindle speed (rpm): "))
+        diameter = float(input("Enter worpiece diameter (mm): "))
 
         # Step 2: Validate the inputs
-        if length <= 0 or feed <= 0 or rpm <= 0:
+        if length <= 0 or feed <= 0 or rpm <= 0 or diameter <= 0:
             print("Error: All values must be greater than zero.")
 
         else:
             # Step 3: Calculate machining time
             machining_time = length / (feed * rpm)
+            cutting_speed = (math.pi * diameter * rpm) / 1000
 
             # Step 4: Display the result
             print("\n--- Machining Results ---")
             print(f"Machining Time: {machining_time:.2f} minutes")
             print(f"Machining Time: {machining_time * 60:.2f} seconds")
+            print(f"Cutting Speed: {cutting_speed:.2f} m/min")
 
     except ValueError:
         print("Error: Please enter valid numerical values.")
