@@ -16,12 +16,17 @@ while True:
         depth_of_cut = float(input("Enter radial depth of cut (mm): "))
         machine_rate = float(input("Enter machine hourly rate (Rs/hour): "))
         setup_time = float(input("Enter setup time (minutes): "))
+        number_of_tool_changes = int(input("Enter number of tool changes: "))
+        tool_change_time = float(input("Enter time per tool change (minutes): "))
+        tool_life = float(input("Enter tool life per cutting edge (minutes): "))
+        tool_edge_cost = float(input("Enter cost per cutting edge (Rs): "))
 
         # Step 2: Validate the inputs
         if (length <= 0 or feed <= 0 or rpm <= 0
             or initial_diameter <= 0 or final_diameter <= 0
             or depth_of_cut <= 0 or machine_rate <= 0
-            or final_diameter >= initial_diameter) or setup_time < 0:
+            or final_diameter >= initial_diameter or setup_time < 0 or number_of_tool_changes < 0 
+            or tool_change_time < 0 or tool_life <= 0 or tool_edge_cost < 0 ):
 
             print("Error: Enter valid positive machining parameters.")
             print("The final diameter must be smaller than the initial diameter.")
@@ -47,18 +52,33 @@ while True:
             # Calculate setup cost
             setup_cost = (setup_time / 60) * machine_rate
 
-            # Calculate total estimated machine cost
-            total_cost = machining_cost + setup_cost
+            # Calculate total tool-change time
+            total_tool_change_time = number_of_tool_changes * tool_change_time
+
+            # Calculate tool-change cost
+            tool_change_cost = (total_tool_change_time / 60) * machine_rate
             
+            # Calculate cutting tool consumption cost 
+            tool_cost = (machining_time / tool_life) * tool_edge_cost
+
+            # Calculate total estimated machine cost
+            total_cost = machining_cost + setup_cost + tool_change_cost + tool_cost
+
+            # Display machining results
             print("\n--- Machining Results ---")
             print(f"Number of Passes: {passes}")
             print(f"Time Per Pass: {time_per_pass:.2f} minutes")
             print(f"Total Machining Time: {machining_time:.2f} minutes")
             print(f"Total Machining Time: {machining_time * 60:.2f} seconds")
             print(f"Initial Cutting Speed: {cutting_speed:.2f} m/min")
-            print(f"Estimated Machining Cost: Rs. {machining_cost:.2f}")
+
+            # Display cost breakdown
+            print(f"Machining Cost: Rs. {machining_cost:.2f}")
             print(f"Setup Cost: Rs. {setup_cost:.2f}")
-            print(f"Total Estimated Machine Cost: Rs. {total_cost:.2f}")
+            print(f"Total Tool Change Time: {total_tool_change_time:.2f} minutes")
+            print(f"Tool Change Cost: Rs. {tool_change_cost:.2f}")
+            print(f"Cutting Tool Consumption Cost: Rs. {tool_cost:.2f}")
+            print(f"Total Estimated Manufacturing Cost: Rs. {total_cost:.2f}")
 
     except ValueError:
         print("Error: Please enter valid numerical values.")
