@@ -56,6 +56,10 @@ def calculate_machining_time(length, feed, rpm, passes):
     # first time_per_pass, then total_time.
     return time_per_pass, total_time
 
+# Calculate cutting speed at the initial workpiece diameter.
+def calculate_cutting_speed(diameter, rpm):
+    cutting_speed = (math.pi * diameter * rpm) / 1000
+    return cutting_speed
 
 # ------------------------------------------------------------
 # START THE CALCULATOR
@@ -275,10 +279,9 @@ while True:
 
         # Cutting speed at the INITIAL diameter.
         # Divide by 1000 to convert mm/min to m/min.
-        cutting_speed = (
-            math.pi * initial_diameter * rpm
-        ) / 1000
-
+        cutting_speed = calculate_cutting_speed(
+            initial_diameter, rpm )
+            
         # ----------------------------------------------------
         # STEP 4: CALCULATE COSTS
         # ----------------------------------------------------
